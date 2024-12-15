@@ -1,0 +1,49 @@
+.countdown-container{
+    display: flex;
+    position: relative;
+  
+    height:415px;
+    aspect-ratio: 1 / 1;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+}
+svg{
+    fill: none;
+    display:flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg); 
+    width: 100%;
+    height: 100%;
+}
+
+
+.number{
+    font-weight: 600;
+    color:white;
+    font-size: 5em;
+}
+
+.outer-circle{ /* background to timer*/
+    fill:none;
+    stroke: #D98282;
+    stroke-width: 40px;
+    stroke-dasharray: 1130;
+    stroke-dashoffset: 0;
+    r:180; 
+    cx:50%;
+    cy:50%;
+}
+.inner-circle{ /* timer indicator*/
+    fill:none;
+    stroke: #fff;
+    stroke-width: 40px;
+    stroke-dasharray: 1130;
+    stroke-dashoffset: 500;
+    r:180; 
+    cx:50%;
+    cy:50%; 
+}
