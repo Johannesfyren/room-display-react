@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import main from './assets/'
 
 
 function App() {
 
   return (
-    <p>hello world </p>
+    <div className='main-container'>
+      <img src="./assets/Bg-img.png" alt="" />
+    </div>
   )
 }
 
