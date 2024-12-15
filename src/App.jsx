@@ -1,12 +1,21 @@
 import { useState } from 'react'
-import main from './assets/'
+import './index.css'
+import Button from './components/Button.jsx'
+
 
 
 function App() {
 
   return (
     <div className='main-container'>
-      <img src="./assets/Bg-img.png" alt="" />
+      <div className='nav-container'>
+        <h1>10:30</h1>
+        <Button text={'Reservér'}/>
+      </div>
+      
+      <div>
+
+      </div>
     </div>
   )
 }
