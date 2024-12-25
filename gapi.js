@@ -3,13 +3,15 @@ async function getEvents() {
     const CALENDAR_ID = "primary"; // Or a specific calendar ID
     try {
       const response = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`,
+        `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?singleEvents=true&maxResults=10&orderBy=startTime`,
         {
           method: "GET",
           headers: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
+          
         }
+        
       );
   
       if (!response.ok) {
@@ -23,5 +25,9 @@ async function getEvents() {
     }
   }
   
+
+ 
+
+
 
 export {getEvents}

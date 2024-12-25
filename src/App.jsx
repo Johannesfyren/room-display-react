@@ -13,12 +13,12 @@ const clickHandler = async () => {
     const response = await data.json();
     console.log(response);
     window.location.href = response.url;
-
-    // sendCodeToBackend();
+    
   } catch (err) {
     console.error("there was and error", err);
   } finally {
     console.log("done");
+    
   }
 };
 const clickHandler2 = async () => {
@@ -32,6 +32,7 @@ const clickHandler3 = async () => {
       body: JSON.stringify({"refresh_token": localStorage.getItem('refresh_token')}),
   })
   console.log(localStorage.getItem('refresh_token'));
+  
   const response = await data.json();
   console.log(response);
   localStorage.setItem("bearer_token", response.access_token);
@@ -42,11 +43,38 @@ const clickHandler3 = async () => {
   }
 
 
+
+
+
+
+
+
 function App() {
+  const [tokensAquired, setTokensAquired] = useState(false);
+  const [events, setEvents] = useState([]);
+
+  // Loding the app, we check for tokens
+  useEffect(()=>{
+    setTokensAquired(checkIfRefreshTokenExist()); // Checks for a refresh token, if it exists, we change the apps interface to not need to log in.
+    checkIfRefreshTokenExist() ? checkIfBearerTokenIsValid() : refreshBearerToken(); //If the bearer_token is not available anymore, we will refresh it
+    
+  },[])
+
+  
   return (
+    <>
+    {tokensAquired ? (
+      console.log('aquired')
+    ) 
+  : (
+    console.log('no aquired')
+  )}
+
+
     <div className="main-container">
-      {code && OAuthRedirectHandler()}{" "}
-      {/*&& !localStorage.getItem('refresh_token')*/}
+      {console.log(localStorage)}
+      {code && !localStorage.getItem('refresh_token') && OAuthRedirectHandler()} {/* CAUTIOS: If we have an invalid refresh_token i localStorage, the app will never get a new refresh_token. If we got a refresh_token, no need to get another */}
+      
       <div className="nav-container">
         <h1>10:30</h1>
         <Button text={"Reservér"} clickHandler={clickHandler} />
@@ -67,10 +95,44 @@ function App() {
         <h1>Ingen begivenheder</h1>
       )}
     </div>
+
+    </>
   );
 }
 
 export default App;
+
+//Checks whether we have gotten a refreshToken
+function checkIfRefreshTokenExist(){
+  return localStorage.getItem('refresh_token') ?  true : false;
+}
+
+function checkIfBearerTokenIsValid(){
+  const currentDate = Date.now();
+  console.log('current date: ', currentDate);
+  console.log('token date: ', localStorage.getItem('expiry_date'))
+  console.log('token is valid according to date comp.: ', currentDate<localStorage.getItem('expiry_date'))
+}
+
+async function refreshBearerToken() {
+  try{
+    const data = await fetch("http://localhost:3000/refreshAccessToken", {
+      method: "POST",
+      headers:{ "Content-Type": "application/json" },
+      body: JSON.stringify({"refresh_token": localStorage.getItem('refresh_token')}),
+  })
+  console.log(localStorage.getItem('refresh_token'));
+  
+  const response = await data.json();
+  console.log(response);
+  localStorage.setItem("bearer_token", response.access_token);
+  }catch(err){
+    console.log(err);
+  }
+
+  }
+
+
 
 function OAuthRedirectHandler() {
   useEffect(() => {
