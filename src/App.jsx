@@ -7,6 +7,8 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
 
+
+
 const acquireTokensOnLogin = async () => {
   try {
     const data = await fetch("http://localhost:3000/auth-url");
@@ -28,6 +30,7 @@ function App() {
   const [events, setEvents] = useState([]);
   const [triggerTimeout, setTriggerTimeout] = useState(false); // timeout used to start
   const time = new Date();
+  const [activeEvent, setActiveEvent] = useState(false);
 
   // Loding the app, we check for tokens and updates bearer if needed
   useEffect(() => {
@@ -60,16 +63,18 @@ function App() {
   //Checking for new events every minute
   useEffect(() => {
     async function compareEvents() {
+      let newestEvents;
       try {
-        const newestEvents = await getEvents(); //get newest events
-
+        newestEvents = await getEvents(); //get newest events
+        //set events to newest events if there is no 401 error
         if (getEvents() === 401) {
           console.log("401 error");
           refreshBearerToken();
         } else {
           setEvents(newestEvents);
-        } //set events to newest events if there is no 401 error
+        } 
 
+        //If there are changes in events since last polling, we update the state
         if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
           setEvents(newestEvents);
           console.log("eventsChanged");
@@ -78,11 +83,24 @@ function App() {
         console.log(err);
       }
     }
+    function checkIfActiveMeeting(startTime, endTime){
+      const today = new Date();
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      console.log('checking if active meeting');
+      if (start <= today && end >= today){
+        console.log('active meeting');
+          return true;
+      }
+  }
 
     let intervalID;
     intervalID = setInterval(() => {
       compareEvents();
-      console.log("checking events");
+
+      if(events.items.length != 0) {
+        checkIfActiveMeeting(events.items[0].start.dateTime, events.items[0].end.dateTime) ? setActiveEvent(true) : setActiveEvent(false);
+      }
     }, 60000);
 
     return () => clearInterval(intervalID);
@@ -90,6 +108,7 @@ function App() {
 
   const clickHandler3 = async () => {
     setTriggerTimeout(true);
+    console.log('event is active?', activeEvent)
   };
 
   async function refreshBearerToken() {
@@ -119,7 +138,8 @@ function App() {
   return (
     <>
       {tokensAquired ? (
-        console.log("aquired")
+        console.log(activeEvent)
+
       ) : (
         <Button
           text={"Connect Google Calendar"}
