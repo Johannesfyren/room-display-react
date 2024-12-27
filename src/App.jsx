@@ -27,7 +27,7 @@ function App() {
   const [tokensAquired, setTokensAquired] = useState(false);
   const [events, setEvents] = useState([]);
   const [triggerTimeout, setTriggerTimeout] = useState(false); // timeout used to start
-  const [eventsHasChanged, setEventsHasChanged] = useState(false);
+  const time = new Date();
 
   // Loding the app, we check for tokens and updates bearer if needed
   useEffect(() => {
@@ -133,7 +133,7 @@ function App() {
           OAuthRedirectHandler()}{" "}
         {/* CAUTIOS: If we have an invalid refresh_token i localStorage, the app will never get a new refresh_token. If we got a refresh_token, no need to get another */}
         <div className="nav-container">
-          <h1>10:30</h1>
+          <h1>{(time.getHours() < 10 ? '+' + time.getHours() : time.getHours()) + ':' + (time.getMinutes()< 10 ? '0' + time.getMinutes() : time.getMinutes())}</h1>
 
           <Button text={"fecth stuff"} clickHandler={clickHandler2} />
           <Button text={"test refetcher"} clickHandler={clickHandler3} />
