@@ -67,7 +67,7 @@ function App() {
       try {
         newestEvents = await getEvents(); //get newest events
         //set events to newest events if there is no 401 error
-        if (getEvents() === 401) {
+        if (newestEvents == '401') {
           console.log("401 error");
           refreshBearerToken();
         } else {
@@ -101,7 +101,7 @@ function App() {
       if(events.items.length != 0) {
         checkIfActiveMeeting(events.items[0].start.dateTime, events.items[0].end.dateTime) ? setActiveEvent(true) : setActiveEvent(false);
       }
-    }, 60000);
+    }, 6000);
 
     return () => clearInterval(intervalID);
   }, [events]);
@@ -138,7 +138,7 @@ function App() {
   return (
     <>
       {tokensAquired ? (
-        console.log(activeEvent)
+        console.log(events)
 
       ) : (
         <Button
@@ -166,7 +166,7 @@ function App() {
               <h2>Coordinator placeholder</h2>
             </div>
 
-            <Countdown />
+            {activeEvent && <Countdown events={events}/>}
           </div>
         ) : (
           <h1>Ingen begivenheder</h1>

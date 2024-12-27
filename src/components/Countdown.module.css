@@ -42,7 +42,7 @@ svg{
     stroke: #fff;
     stroke-width: 40px;
     stroke-dasharray: 1130;
-    stroke-dashoffset: 500;
+    stroke-dashoffset: 0;
     r:180; 
     cx:50%;
     cy:50%; 
