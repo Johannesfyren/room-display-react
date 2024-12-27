@@ -16,7 +16,9 @@ async function getEvents() {
       );
   
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.log(`HTTP error! status: ${response.status}`);
+        return response.status;
+        //throw new Error(`HTTP error! status: ${response.status}`);
 
       }
   

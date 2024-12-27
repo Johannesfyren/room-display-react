@@ -7,7 +7,7 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
 
-const clickHandler = async () => {
+const acquireTokensOnLogin = async () => {
   try {
     const data = await fetch("http://localhost:3000/auth-url");
     const response = await data.json();
@@ -34,10 +34,8 @@ function App() {
     setTokensAquired(checkIfRefreshTokenExist()); // Checks for a refresh token, if it exists, we change the apps interface to not need to log in.
 
     if (checkIfRefreshTokenExist()) {
-      //If the bearer_token is not available anymore, we will refresh it
       !checkIfBearerTokenIsValid() && refreshBearerToken(); //If the bearer_token is not available anymore, we will refresh it
     }
-    
   }, []);
 
   //Refreshing the bearer token every hour - 30 secs, so it never fails to fetch
@@ -56,28 +54,39 @@ function App() {
     }
 
     setTriggerTimeout(false);
-    return () => clearTimeout(timeoutID); 
+    return () => clearTimeout(timeoutID);
   }, [triggerTimeout]);
 
+  //Checking for new events every minute
   useEffect(() => {
-    
-    async function compareEvents(){
-      const newestEvents = await getEvents(); //get newest events
-      setEvents(await getEvents()); //Not sure this is the best way, TODO: Fetch somewhere else
-      if (JSON.stringify(newestEvents) !== JSON.stringify(events)){
-        setEvents(newestEvents);
-        console.log('eventsChanged')
-      } 
+    async function compareEvents() {
+      try {
+        const newestEvents = await getEvents(); //get newest events
+
+        if (getEvents() === 401) {
+          console.log("401 error");
+          refreshBearerToken();
+        } else {
+          setEvents(newestEvents);
+        } //set events to newest events if there is no 401 error
+
+        if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
+          setEvents(newestEvents);
+          console.log("eventsChanged");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     let intervalID;
     intervalID = setInterval(() => {
       compareEvents();
-      console.log('checking events')
-    }, 5000);
+      console.log("checking events");
+    }, 60000);
 
     return () => clearInterval(intervalID);
-  },[events])
+  }, [events]);
 
   const clickHandler3 = async () => {
     setTriggerTimeout(true);
@@ -107,15 +116,15 @@ function App() {
     }
   }
 
-
-
-
   return (
     <>
       {tokensAquired ? (
         console.log("aquired")
       ) : (
-        <Button text={"Log in"} clickHandler={clickHandler} />
+        <Button
+          text={"Connect Google Calendar"}
+          clickHandler={acquireTokensOnLogin}
+        />
       )}
 
       <div className="main-container">
@@ -147,12 +156,6 @@ function App() {
   );
 }
 
-
-
-
-
-
-
 //Checks whether we have gotten a refreshToken
 function checkIfRefreshTokenExist() {
   return localStorage.getItem("refresh_token") ? true : false;
@@ -160,7 +163,6 @@ function checkIfRefreshTokenExist() {
 
 function checkIfBearerTokenIsValid() {
   const currentDate = Date.now();
-  console.log(currentDate < localStorage.getItem("expiry_date"));
   return currentDate < localStorage.getItem("expiry_date");
 }
 
@@ -175,23 +177,16 @@ function OAuthRedirectHandler() {
     const code = params.get("code"); // Extract 'code' from the URL
 
     if (code) {
-      console.log("Authorization code:", code);
-
-      // Send the code to the backend
+      // Send the code from the URL to the backend
       fetch(`http://localhost:3000/oauth2callback?code=${code}`, {
         method: "GET",
-
-        // headers: { "Content-Type": "application/json" },
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Tokens received from backend:", data);
           localStorage.setItem("bearer_token", data.access_token);
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expiry_date", data.expiry_date);
-          console.log(localStorage);
-          window.location.href = "http://localhost:5173/";
-          // Optionally redirect to another page or save tokens
+          window.location.href = "http://localhost:5173/"; //TODO: Change to the correct URL
         })
         .catch((error) => console.error("Error sending code:", error));
     } else {
@@ -199,6 +194,5 @@ function OAuthRedirectHandler() {
     }
   }, []); //
 }
-
 
 export default App;
