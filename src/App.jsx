@@ -158,7 +158,7 @@ function App() {
           <Button text={"fecth stuff"} clickHandler={clickHandler2} />
           <Button text={"test refetcher"} clickHandler={clickHandler3} />
         </div>
-        {activeMeeting ? (
+        {activeEvent ? (
           <div className="meeting-info-container">
             <div>
               <h1>Title placeholder</h1>
@@ -166,7 +166,7 @@ function App() {
               <h2>Coordinator placeholder</h2>
             </div>
 
-            {activeEvent && <Countdown events={events}/>}
+             <Countdown events={events}/>
           </div>
         ) : (
           <h1>Ingen begivenheder</h1>

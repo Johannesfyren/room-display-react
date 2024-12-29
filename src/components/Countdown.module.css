@@ -33,17 +33,17 @@ svg{
     stroke-width: 40px;
     stroke-dasharray: 1130;
     stroke-dashoffset: 0;
-    r:180; 
+    /* r:180; 
     cx:50%;
-    cy:50%;
+    cy:50%; */
 }
 .inner-circle{ /* timer indicator*/
     fill:none;
     stroke: #fff;
     stroke-width: 40px;
     stroke-dasharray: 1130;
-    stroke-dashoffset: 0;
-    r:180; 
+    stroke-dashoffset: 1130;
+    /* r:180; 
     cx:50%;
-    cy:50%; 
+    cy:50%;  */
 }
