@@ -7,8 +7,6 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
 
-
-
 const acquireTokensOnLogin = async () => {
   try {
     const data = await fetch("http://localhost:3000/auth-url");
@@ -72,7 +70,7 @@ function App() {
     //       refreshBearerToken();
     //     } else {
     //       setEvents(newestEvents);
-    //     } 
+    //     }
 
     //     //If there are changes in events since last polling, we update the state
     //     if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
@@ -85,19 +83,23 @@ function App() {
     // }
     async function fetchEvents() {
       const newestEvents = await getEvents(); //get newest events
+      if (newestEvents == "401") {
+        console.log("401 error");
+        refreshBearerToken();
+      } 
       //setEvents(newestEvents);
       return newestEvents;
     }
-    function checkIfActiveMeeting(startTime, endTime){
+    function checkIfActiveMeeting(startTime, endTime) {
       const today = new Date();
       const start = new Date(startTime);
       const end = new Date(endTime);
-      console.log('checking if active meeting');
-      if (start <= today && end >= today){
-        console.log('active meeting');
-          return true;
+      console.log("checking if active meeting");
+      if (start <= today && end >= today) {
+        console.log("active meeting");
+        return true;
       }
-  }
+    }
 
     let intervalID;
     intervalID = setInterval(async () => {
@@ -107,9 +109,14 @@ function App() {
       setEvents(newestEvents);
 
       //Check if there are events, an if so, check if the first event is active. Else, set activeEvent to false
-      if(newestEvents.length != 0) {
-        checkIfActiveMeeting(newestEvents.items[0].start.dateTime, newestEvents.items[0].end.dateTime) ? setActiveEvent(true) : setActiveEvent(false);
-      } else{
+      if (newestEvents.length != 0) {
+        checkIfActiveMeeting(
+          newestEvents.items[0].start.dateTime,
+          newestEvents.items[0].end.dateTime
+        )
+          ? setActiveEvent(true)
+          : setActiveEvent(false);
+      } else {
         setActiveEvent(false);
       }
     }, 6000);
@@ -119,7 +126,7 @@ function App() {
 
   const clickHandler3 = async () => {
     setTriggerTimeout(true);
-    console.log('event is active?', activeEvent)
+    console.log("event is active?", activeEvent);
   };
 
   async function refreshBearerToken() {
@@ -150,7 +157,6 @@ function App() {
     <>
       {tokensAquired ? (
         console.log(events)
-
       ) : (
         <Button
           text={"Connect Google Calendar"}
@@ -164,7 +170,13 @@ function App() {
           OAuthRedirectHandler()}{" "}
         {/* CAUTIOS: If we have an invalid refresh_token i localStorage, the app will never get a new refresh_token. If we got a refresh_token, no need to get another */}
         <div className="nav-container">
-          <h1>{(time.getHours() < 10 ? '+' + time.getHours() : time.getHours()) + ':' + (time.getMinutes()< 10 ? '0' + time.getMinutes() : time.getMinutes())}</h1>
+          <h1>
+            {(time.getHours() < 10 ? "+" + time.getHours() : time.getHours()) +
+              ":" +
+              (time.getMinutes() < 10
+                ? "0" + time.getMinutes()
+                : time.getMinutes())}
+          </h1>
 
           <Button text={"fecth stuff"} clickHandler={clickHandler2} />
           <Button text={"test refetcher"} clickHandler={clickHandler3} />
@@ -173,11 +185,19 @@ function App() {
           <div className="meeting-info-container">
             <div>
               <h1>{events.items[0].summary}</h1>
-              <h2>{`${new Date(events.items[0].start.dateTime).getHours()}.${new Date(events.items[0].end.dateTime).getMinutes()}-${new Date(events.items[0].end.dateTime).getHours()}.${new Date(events.items[0].end.dateTime).getMinutes()}`}</h2>
+              <h2>{`${new Date(
+                events.items[0].start.dateTime
+              ).getHours()}.${new Date(
+                events.items[0].end.dateTime
+              ).getMinutes()}-${new Date(
+                events.items[0].end.dateTime
+              ).getHours()}.${new Date(
+                events.items[0].end.dateTime
+              ).getMinutes()}`}</h2>
               <h2>Coordinator placeholder</h2>
             </div>
 
-             {<Countdown events={events}/>}
+            {<Countdown events={events} />}
           </div>
         ) : (
           <h1>Ingen begivenheder</h1>
