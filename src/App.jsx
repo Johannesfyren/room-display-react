@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./index.css";
 import Button from "./components/Button.jsx";
 import Countdown from "./components/Countdown.jsx";
-
+import Time from "./components/Time.jsx";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
@@ -19,9 +19,7 @@ const acquireTokensOnLogin = async () => {
     console.log("done");
   }
 };
-const clickHandler2 = async () => {
-  getEvents();
-};
+
 
 function App() {
   const [tokensAquired, setTokensAquired] = useState(false);
@@ -60,33 +58,12 @@ function App() {
 
   //Checking for new events every minute
   useEffect(() => {
-    // async function compareEvents() {
-    //   let newestEvents;
-    //   try {
-    //     newestEvents = await getEvents(); //get newest events
-    //     //set events to newest events if there is no 401 error
-    //     if (newestEvents == '401') {
-    //       console.log("401 error");
-    //       refreshBearerToken();
-    //     } else {
-    //       setEvents(newestEvents);
-    //     }
-
-    //     //If there are changes in events since last polling, we update the state
-    //     if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
-    //       setEvents(newestEvents);
-    //       console.log("eventsChanged");
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
     async function fetchEvents() {
       const newestEvents = await getEvents(); //get newest events
       if (newestEvents == "401") {
         console.log("401 error");
         refreshBearerToken();
-      } 
+      }
       //setEvents(newestEvents);
       return newestEvents;
     }
@@ -124,10 +101,7 @@ function App() {
     return () => clearInterval(intervalID);
   }, [events]);
 
-  const clickHandler3 = async () => {
-    setTriggerTimeout(true);
-    console.log("event is active?", activeEvent);
-  };
+  
 
   async function refreshBearerToken() {
     try {
@@ -156,53 +130,50 @@ function App() {
   return (
     <>
       {tokensAquired ? (
-        console.log(events)
+        <div className="main-container">
+          {code &&
+            !localStorage.getItem("refresh_token") &&
+            OAuthRedirectHandler()}
+          
+          <div className="nav-container">
+            <h1>
+              {(time.getHours() < 10
+                ? "+" + time.getHours()
+                : time.getHours()) +
+                ":" +
+                (time.getMinutes() < 10
+                  ? "0" + time.getMinutes()
+                  : time.getMinutes())}
+            </h1>
+
+          
+          </div>
+          {activeEvent ? (
+            <div className="meeting-info-container">
+              <div>
+                <h1>{events.items[0].summary}</h1>
+
+                <Time
+                  time={[
+                    new Date(events.items[0].start.dateTime),
+                    new Date(events.items[0].end.dateTime),
+                  ]}
+                ></Time>
+                <h2>Coordinator placeholder</h2>
+              </div>
+
+              {<Countdown events={events} />}
+            </div>
+          ) : (
+            <h1>Ingen begivenheder</h1>
+          )}
+        </div>
       ) : (
         <Button
           text={"Connect Google Calendar"}
           clickHandler={acquireTokensOnLogin}
         />
       )}
-
-      <div className="main-container">
-        {code &&
-          !localStorage.getItem("refresh_token") &&
-          OAuthRedirectHandler()}{" "}
-        {/* CAUTIOS: If we have an invalid refresh_token i localStorage, the app will never get a new refresh_token. If we got a refresh_token, no need to get another */}
-        <div className="nav-container">
-          <h1>
-            {(time.getHours() < 10 ? "+" + time.getHours() : time.getHours()) +
-              ":" +
-              (time.getMinutes() < 10
-                ? "0" + time.getMinutes()
-                : time.getMinutes())}
-          </h1>
-
-          <Button text={"fecth stuff"} clickHandler={clickHandler2} />
-          <Button text={"test refetcher"} clickHandler={clickHandler3} />
-        </div>
-        {activeEvent ? (
-          <div className="meeting-info-container">
-            <div>
-              <h1>{events.items[0].summary}</h1>
-              <h2>{`${new Date(
-                events.items[0].start.dateTime
-              ).getHours()}.${new Date(
-                events.items[0].end.dateTime
-              ).getMinutes()}-${new Date(
-                events.items[0].end.dateTime
-              ).getHours()}.${new Date(
-                events.items[0].end.dateTime
-              ).getMinutes()}`}</h2>
-              <h2>Coordinator placeholder</h2>
-            </div>
-
-            {<Countdown events={events} />}
-          </div>
-        ) : (
-          <h1>Ingen begivenheder</h1>
-        )}
-      </div>
     </>
   );
 }
