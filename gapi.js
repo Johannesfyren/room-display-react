@@ -21,10 +21,16 @@ async function getEvents() {
         //throw new Error(`HTTP error! status: ${response.status}`);
 
       }
-  
+      
       const events = await response.json();
+      
+      if (events.items.length == 0) {
+        return []; 
+      }else{
+        return events;
+      }
 
-      return events;
+
     } catch (error) {
       console.error("Error fetching events:", error);
     }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./index.css";
 import Button from "./components/Button.jsx";
 import Countdown from "./components/Countdown.jsx";
-const activeMeeting = true;
+
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
@@ -62,26 +62,31 @@ function App() {
 
   //Checking for new events every minute
   useEffect(() => {
-    async function compareEvents() {
-      let newestEvents;
-      try {
-        newestEvents = await getEvents(); //get newest events
-        //set events to newest events if there is no 401 error
-        if (newestEvents == '401') {
-          console.log("401 error");
-          refreshBearerToken();
-        } else {
-          setEvents(newestEvents);
-        } 
+    // async function compareEvents() {
+    //   let newestEvents;
+    //   try {
+    //     newestEvents = await getEvents(); //get newest events
+    //     //set events to newest events if there is no 401 error
+    //     if (newestEvents == '401') {
+    //       console.log("401 error");
+    //       refreshBearerToken();
+    //     } else {
+    //       setEvents(newestEvents);
+    //     } 
 
-        //If there are changes in events since last polling, we update the state
-        if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
-          setEvents(newestEvents);
-          console.log("eventsChanged");
-        }
-      } catch (err) {
-        console.log(err);
-      }
+    //     //If there are changes in events since last polling, we update the state
+    //     if (JSON.stringify(newestEvents) !== JSON.stringify(events)) {
+    //       setEvents(newestEvents);
+    //       console.log("eventsChanged");
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
+    async function fetchEvents() {
+      const newestEvents = await getEvents(); //get newest events
+      //setEvents(newestEvents);
+      return newestEvents;
     }
     function checkIfActiveMeeting(startTime, endTime){
       const today = new Date();
@@ -95,11 +100,17 @@ function App() {
   }
 
     let intervalID;
-    intervalID = setInterval(() => {
-      compareEvents();
+    intervalID = setInterval(async () => {
+      //compareEvents();
 
-      if(events.items.length != 0) {
-        checkIfActiveMeeting(events.items[0].start.dateTime, events.items[0].end.dateTime) ? setActiveEvent(true) : setActiveEvent(false);
+      const newestEvents = await fetchEvents(); //get newest events
+      setEvents(newestEvents);
+
+      //Check if there are events, an if so, check if the first event is active. Else, set activeEvent to false
+      if(newestEvents.length != 0) {
+        checkIfActiveMeeting(newestEvents.items[0].start.dateTime, newestEvents.items[0].end.dateTime) ? setActiveEvent(true) : setActiveEvent(false);
+      } else{
+        setActiveEvent(false);
       }
     }, 6000);
 
@@ -161,12 +172,12 @@ function App() {
         {activeEvent ? (
           <div className="meeting-info-container">
             <div>
-              <h1>Title placeholder</h1>
-              <h2>Time placeholder</h2>
+              <h1>{events.items[0].summary}</h1>
+              <h2>{`${new Date(events.items[0].start.dateTime).getHours()}.${new Date(events.items[0].end.dateTime).getMinutes()}-${new Date(events.items[0].end.dateTime).getHours()}.${new Date(events.items[0].end.dateTime).getMinutes()}`}</h2>
               <h2>Coordinator placeholder</h2>
             </div>
 
-             <Countdown events={events}/>
+             {<Countdown events={events}/>}
           </div>
         ) : (
           <h1>Ingen begivenheder</h1>
