@@ -6,19 +6,9 @@ import Time from "./components/Time.jsx";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents } from "../gapi.js";
+import BookingModal from "./components/BookingModal.jsx";
 
-const acquireTokensOnLogin = async () => {
-  try {
-    const data = await fetch("http://localhost:3000/auth-url");
-    const response = await data.json();
-    console.log(response);
-    window.location.href = response.url;
-  } catch (err) {
-    console.error("there was and error", err);
-  } finally {
-    console.log("done");
-  }
-};
+
 
 
 function App() {
@@ -27,6 +17,7 @@ function App() {
   const [triggerTimeout, setTriggerTimeout] = useState(false); // timeout used to start
   const time = new Date();
   const [activeEvent, setActiveEvent] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Loding the app, we check for tokens and updates bearer if needed
   useEffect(() => {
@@ -136,16 +127,22 @@ function App() {
             OAuthRedirectHandler()}
           
           <div className="nav-container">
-            <h1>
+            <h1 className="clock">
               {(time.getHours() < 10
-                ? "+" + time.getHours()
+                ? "0" + time.getHours()
                 : time.getHours()) +
                 ":" +
                 (time.getMinutes() < 10
                   ? "0" + time.getMinutes()
                   : time.getMinutes())}
             </h1>
+            {!activeEvent 
+            ? 
+              <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'}/> 
+            : 
+              <Button text={'Afslut'} clickHandler={reserverMeeting} btnType={'secondary'}/>}
 
+            
           
           </div>
           {activeEvent ? (
@@ -174,10 +171,23 @@ function App() {
           clickHandler={acquireTokensOnLogin}
         />
       )}
+      {showModal && BookingModal({showModal, setShowModal, events, setEvents})}
     </>
   );
 }
 
+const acquireTokensOnLogin = async () => {
+  try {
+    const data = await fetch("http://localhost:3000/auth-url");
+    const response = await data.json();
+    console.log(response);
+    window.location.href = response.url;
+  } catch (err) {
+    console.error("there was and error", err);
+  } finally {
+    console.log("done");
+  }
+};
 //Checks whether we have gotten a refreshToken
 function checkIfRefreshTokenExist() {
   return localStorage.getItem("refresh_token") ? true : false;
@@ -215,6 +225,11 @@ function OAuthRedirectHandler() {
       console.error("Authorization code not found in URL");
     }
   }, []); //
+}
+
+function reserverMeeting(){
+  console.log("reservering");
+
 }
 
 export default App;

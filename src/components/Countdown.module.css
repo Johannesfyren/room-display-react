@@ -47,3 +47,36 @@ svg{
     cx:50%;
     cy:50%;  */
 }
+
+.indicator-anim{
+    fill: none;
+    width: 200px;
+    height: 200px;
+    animation: anim 0.3s ease-out;
+    stroke: white;
+    stroke-width: 2px;
+    border-color: black;
+    border-style: solid;
+    stroke-dasharray: 1290;
+    stroke-dashoffset: 1290;
+    animation: anim 2.5s ease-in infinite reverse;
+    /* animation: anim-close 1s ease-out reverse; */
+    transform-origin: center;
+    r:205; 
+    cx:50%;
+    cy:50%;
+}
+
+@keyframes anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    40% {
+        stroke-dashoffset: 1600;
+        transform: rotate(400deg);
+    }
+    100%{
+        transform:rotate(720deg);
+    }
+    
+}

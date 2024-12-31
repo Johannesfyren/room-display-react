@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 *{
     margin: 0px;
     padding: 0;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    --pri-col: #252424; /*#252424;*/
+    --sec-col: rgb(19, 35, 49, 0.3); /*rgb(19, 35, 49)*/
+    --card-col: rgb(24, 43, 60);
+    --btn-prim: rgb(49, 49, 142);
 }
 
 
@@ -12,6 +19,7 @@
     background-size: cover;
     display:flex;
     flex-direction: column;
+    position: relative;
 }
 
 .nav-container{
@@ -23,4 +31,46 @@
 .meeting-info-container{
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.clock{
+    font-size: 5em;
+    color: rgb(214, 214, 214);
+}
+
+.primary-btn{
+    position:relative;
+    padding: 15px 25px;
+    font-size: 2em;
+    border-radius: 10px;
+    border-style: none;
+    background-color: var(--btn-prim);
+    color: white;
+    font-weight: 600;
+    height: 80px;
+}
+
+.secondary-btn{
+    position: relative;
+    padding: 15px 25px;
+    font-size: 2em;
+    border-radius: 10px;
+    border: 2px solid white;
+    background-color: transparent;
+    font-weight: 600;
+    color: white;
+    height: 80px;
+    
+}
+.disabled-btn{
+    position: relative;
+    padding: 15px 25px;
+    font-size: 2em;
+    border-radius: 10px;
+    border: 2px solid rgb(162, 159, 159);
+    background-color: transparent;
+    font-weight: 600;
+    color: rgb(134, 131, 131);
+    height: 80px;
+    
 }
