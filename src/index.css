@@ -72,5 +72,5 @@
     font-weight: 600;
     color: rgb(134, 131, 131);
     height: 80px;
-    
+    pointer-events: none;
 }

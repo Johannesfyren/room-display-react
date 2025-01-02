@@ -5,7 +5,7 @@ import Countdown from "./components/Countdown.jsx";
 import Time from "./components/Time.jsx";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-import { getEvents } from "../gapi.js";
+import { getEvents, endEvent} from "../gapi.js";
 import BookingModal from "./components/BookingModal.jsx";
 
 
@@ -15,6 +15,7 @@ function App() {
   const [tokensAquired, setTokensAquired] = useState(false);
   const [events, setEvents] = useState([]);
   const [triggerTimeout, setTriggerTimeout] = useState(false); // timeout used to start
+  const [triggerRender, setTriggerRender] = useState(false); // timeout used to start
   const time = new Date();
   const [activeEvent, setActiveEvent] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -49,48 +50,45 @@ function App() {
 
   //Checking for new events every minute
   useEffect(() => {
-    async function fetchEvents() {
-      const newestEvents = await getEvents(); //get newest events
+    async function fetchEventsAndUpdate() {
+      const newestEvents = await getEvents(); // get newest events
       if (newestEvents == "401") {
         console.log("401 error");
         refreshBearerToken();
+      } else {
+        setEvents(newestEvents);
+  
+        // Check if there are events, and if so, check if the first event is active.
+        if (newestEvents.length !== 0) {
+          const isActive = checkIfActiveMeeting(
+            newestEvents.items[0]?.start?.dateTime,
+            newestEvents.items[0]?.end?.dateTime
+          );
+          setActiveEvent(isActive);
+        } else {
+          setActiveEvent(false);
+        }
       }
-      //setEvents(newestEvents);
-      return newestEvents;
     }
     function checkIfActiveMeeting(startTime, endTime) {
-      const today = new Date();
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      console.log("checking if active meeting");
-      if (start <= today && end >= today) {
-        console.log("active meeting");
-        return true;
-      }
-    }
+          const today = new Date();
+          const start = new Date(startTime);
+          const end = new Date(endTime);
 
-    let intervalID;
-    intervalID = setInterval(async () => {
-      //compareEvents();
+          if (start <= today && end >= today) {
+            return true;
+          }
+        }
+    // Set interval to poll events every 60 seconds
+    const intervalID = setInterval(fetchEventsAndUpdate, 60000);
+  
+    // Initial fetch on mount
+    fetchEventsAndUpdate();
+    setTriggerRender(false);
+  
+    return () => clearInterval(intervalID); // Cleanup interval on unmount
+  }, [triggerRender]); 
 
-      const newestEvents = await fetchEvents(); //get newest events
-      setEvents(newestEvents);
-
-      //Check if there are events, an if so, check if the first event is active. Else, set activeEvent to false
-      if (newestEvents.length != 0) {
-        checkIfActiveMeeting(
-          newestEvents.items[0].start.dateTime,
-          newestEvents.items[0].end.dateTime
-        )
-          ? setActiveEvent(true)
-          : setActiveEvent(false);
-      } else {
-        setActiveEvent(false);
-      }
-    }, 6000);
-
-    return () => clearInterval(intervalID);
-  }, [events]);
 
   
 
@@ -105,6 +103,7 @@ function App() {
       });
       console.log("I REFRESHED!!!!");
       const response = await data.json();
+      console.log('response is', response)
       localStorage.setItem("bearer_token", response.access_token);
 
       const currentTime = Date.now();
@@ -122,10 +121,6 @@ function App() {
     <>
       {tokensAquired ? (
         <div className="main-container">
-          {code &&
-            !localStorage.getItem("refresh_token") &&
-            OAuthRedirectHandler()}
-          
           <div className="nav-container">
             <h1 className="clock">
               {(time.getHours() < 10
@@ -140,7 +135,10 @@ function App() {
             ? 
               <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'}/> 
             : 
-              <Button text={'Afslut'} clickHandler={reserverMeeting} btnType={'secondary'}/>}
+              <Button text={'Afslut'} clickHandler={()=>{
+                endEvent(events.items[0].id);
+                setTriggerRender(true); // TODO, fix det ordentligt
+              }} btnType={'secondary'}/>}
 
             
           
@@ -159,7 +157,7 @@ function App() {
                 <h2>Coordinator placeholder</h2>
               </div>
 
-              {<Countdown events={events} />}
+              <Countdown events={events} />
             </div>
           ) : (
             <h1>Ingen begivenheder</h1>
@@ -170,8 +168,10 @@ function App() {
           text={"Connect Google Calendar"}
           clickHandler={acquireTokensOnLogin}
         />
+
       )}
-      {showModal && BookingModal({showModal, setShowModal, events, setEvents})}
+      {code && !localStorage.getItem("refresh_token") && OAuthRedirectHandler()}{/* Redirects to the OAuth2callback if we dont have a refresh_token*/}
+      {showModal && <BookingModal setShowModal = {setShowModal} events = {events} setEvents = {setEvents} setTriggerRender={setTriggerRender}/>}
     </>
   );
 }
