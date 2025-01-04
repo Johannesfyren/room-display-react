@@ -3,7 +3,31 @@
     flex-direction:row;
     gap: 10px;
     overflow-x: scroll;
-    min-height: 200px;
-    background-color: rgba(0,12,131,0.5);
+    height: 200px;
+
+    background-color: var(--sec-col);;
     justify-self: self-end;
+}
+.card-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--card-col);
+    color: rgb(189, 189, 189);
+    min-width: 300px;
+    border-radius: 10px;
+    margin: 10px 0 10px 0;
+    
+    
+    h1{
+        font-size: 2em;
+    }
+    p{
+        font-size: 1.5em;
+    }
+    
+}
+.card-container:first-child{
+    margin-left: 10px;
 }

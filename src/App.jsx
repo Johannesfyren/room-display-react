@@ -8,6 +8,7 @@ const code = params.get("code");
 import { getEvents, endEvent} from "../gapi.js";
 import BookingModal from "./components/BookingModal.jsx";
 import UpcomingMeetingContainer from "./components/UpcomingMeetingContainer.jsx";
+import PendingMeeting from "./components/PendingMeeting.jsx";
 
 
 
@@ -163,9 +164,9 @@ const endMeetingTrigger = async () => {
             </div>
             
           ) : (
-            <h1>Kommer der snart en begivenhed?</h1>
+            events?.items?.length > 0 &&  <PendingMeeting event={events.items[0]} />
           )}
-          {events?.items?.length > 1 && <UpcomingMeetingContainer events={events} />}
+          {events?.items?.length > 0 && <UpcomingMeetingContainer events={events} />}
         </div>
       ) : (
         <Button

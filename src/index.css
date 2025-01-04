@@ -9,6 +9,7 @@
     --sec-col: rgb(19, 35, 49, 0.3); /*rgb(19, 35, 49)*/
     --card-col: rgb(24, 43, 60);
     --btn-prim: rgb(49, 49, 142);
+
 }
 
 
@@ -21,6 +22,7 @@
     flex-direction: column;
     position: relative;
     justify-content: space-between;
+    touch-action: none;
 }
 
 .nav-container{
