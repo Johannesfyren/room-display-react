@@ -125,7 +125,7 @@ const endMeetingTrigger = async () => {
   return (
     <>
       {tokensAquired ? (
-        <div className="main-container">
+        <div className={activeEvent ? "main-container main-container-occupied" : "main-container"}>
           <div className="nav-container">
             <h1 className="clock">
               {(time.getHours() < 10
@@ -160,7 +160,6 @@ const endMeetingTrigger = async () => {
                 
                 <h2>Coordinator placeholder</h2>
               </div>
-
               <Countdown events={events} />
               
             </div>

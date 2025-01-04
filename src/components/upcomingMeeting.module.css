@@ -15,13 +15,18 @@
     padding: 10px;
     background-color: var(--card-col);
     color: rgb(189, 189, 189);
-    min-width: 300px;
+    width: 400px;
     border-radius: 10px;
     margin: 10px 0 10px 0;
     
     
     h1{
         font-size: 2em;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
     }
     p{
         font-size: 1.5em;
