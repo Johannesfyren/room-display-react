@@ -31,10 +31,7 @@
     justify-content: space-between;
 }
 
-.meeting-info-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
+
 
 .clock{
     font-size: 5em;
@@ -76,4 +73,28 @@
     color: rgb(134, 131, 131);
     height: 80px;
     pointer-events: none;
+}
+
+.meeting-info-container{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.meeting-details{
+    h1{
+        font-size: 3.5em;
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+        max-width: 100%;
+        text-wrap: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+    h2{
+        font-size: 1.5em;
+        color: white;
+        font-weight: 600;
+    }
 }

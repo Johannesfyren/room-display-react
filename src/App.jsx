@@ -147,15 +147,17 @@ const endMeetingTrigger = async () => {
           </div>
           {activeEvent ? (
             <div className="meeting-info-container">
-              <div>
+              <div className="meeting-details">
                 <h1>{events.items[0].summary}</h1>
-
-                <Time
-                  time={[
-                    new Date(events.items[0].start.dateTime),
-                    new Date(events.items[0].end.dateTime),
-                  ]}
-                ></Time>
+                <h2>
+                  <Time
+                    time={[
+                      new Date(events.items[0].start.dateTime),
+                      new Date(events.items[0].end.dateTime),
+                    ]}
+                  ></Time>
+                </h2>
+                
                 <h2>Coordinator placeholder</h2>
               </div>
 

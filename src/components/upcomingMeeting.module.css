@@ -3,7 +3,7 @@
     flex-direction:row;
     gap: 10px;
     overflow-x: scroll;
-    height: 200px;
+    height: 120px;
 
     background-color: var(--sec-col);;
     justify-self: self-end;
