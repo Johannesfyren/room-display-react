@@ -1,4 +1,4 @@
-export default function Button({text, clickHandler, btnType}){
+export default function Button({text, clickHandler, btnType, isLoading = false}){
     let btnClass = btnType == 'primary' ? 'primary-btn' : btnType == 'secondary' ? 'secondary-btn' : '';
     if (btnType == 'primary') {
         btnClass = 'primary-btn';
@@ -7,7 +7,10 @@ export default function Button({text, clickHandler, btnType}){
     } else if (btnType == 'disabled') {
         btnClass = 'disabled-btn';
     }
-    return(
-        <button onClick={clickHandler} className={btnClass}>{text}</button>
+    return (
+        <>
+        {isLoading && <button onClick={clickHandler} className={btnClass}><span className="spinner"></span></button>}
+        {!isLoading && <button onClick={clickHandler} className={btnClass}>{text}</button>}
+        </>
     )
 }

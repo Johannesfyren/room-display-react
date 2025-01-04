@@ -21,6 +21,7 @@ function App() {
   const time = new Date();
   const [activeEvent, setActiveEvent] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);  
 
   // When starting the app, we check for tokens and updates bearer if needed
   useEffect(() => {
@@ -86,11 +87,12 @@ function App() {
     // Initial fetch on mount
     fetchEventsAndUpdate();
     setTriggerRender(false);
-      console.log('fetching events');
+    setIsLoading(false);
     return () => clearInterval(intervalID); // Cleanup interval on unmount
   }, [triggerRender]); 
 
 const endMeetingTrigger = async () => {
+    setIsLoading(true);
     const check = endEvent(await events.items[0].id);
     if (await check == 200) {
       setTriggerRender(true); 
@@ -138,9 +140,9 @@ const endMeetingTrigger = async () => {
             </h1>
             {!activeEvent 
             ? 
-              <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'}/> 
+              <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'} isLoading={isLoading}/> 
             : 
-              <Button text={'Afslut'} clickHandler={endMeetingTrigger} btnType={'secondary'}/>}
+              <Button text={'Afslut'} clickHandler={endMeetingTrigger} btnType={'secondary'} isLoading={isLoading}/>}
 
             
           
@@ -177,7 +179,7 @@ const endMeetingTrigger = async () => {
 
       )}
       {code && !localStorage.getItem("refresh_token") && OAuthRedirectHandler()}{/* Redirects to the OAuth2callback if we dont have a refresh_token*/}
-      {showModal && <BookingModal setShowModal = {setShowModal} events = {events} setEvents = {setEvents} setTriggerRender={setTriggerRender}/>}
+      {showModal && <BookingModal setShowModal = {setShowModal} events = {events} setEvents = {setEvents} setTriggerRender={setTriggerRender} setIsLoading={setIsLoading}/>}
     </>
   );
 }

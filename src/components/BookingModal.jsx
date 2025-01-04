@@ -7,14 +7,16 @@ export default function BookingModal({
   setTriggerRender,
   setShowModal,
   events,
-  setEvents,
+  setIsLoading,
 }) {
   
   
     const handleClickEvent = async (extendedTime) => {
+        setIsLoading(true); //this is for button loading spinner
         setShowModal(false);
         await createEvent(extendedTime);
         setTriggerRender(true);
+        
     }
   
     return (
