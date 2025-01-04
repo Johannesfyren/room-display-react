@@ -47,8 +47,8 @@ async function getEvents() {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
           body: JSON.stringify({
-            "summary": "Test event",
-            "description": "A test event",
+            "summary": "Ad-hoc meeting",
+            "description": "This meeting was booked from the display",
             "start": {
               "dateTime": now.toISOString(),
               "timeZone": "Europe/Copenhagen"
@@ -91,10 +91,6 @@ async function getEvents() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              // start: {
-              //   dateTime: today.toISOString(),
-              //   timeZone: "Europe/Copenhagen",
-              // },
               end: {
                 dateTime: today.toISOString(),
                 timeZone: "Europe/Copenhagen",
@@ -109,7 +105,7 @@ async function getEvents() {
           return;
         }
         console.log("Event updated successfully:", result);
-        return "updated";
+        return response.status;
       } catch (error) {
         console.error("Error:", error);
       }

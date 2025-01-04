@@ -7,6 +7,7 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 import { getEvents, endEvent} from "../gapi.js";
 import BookingModal from "./components/BookingModal.jsx";
+import UpcomingMeetingContainer from "./components/UpcomingMeetingContainer.jsx";
 
 
 
@@ -20,7 +21,7 @@ function App() {
   const [activeEvent, setActiveEvent] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // Loding the app, we check for tokens and updates bearer if needed
+  // When starting the app, we check for tokens and updates bearer if needed
   useEffect(() => {
     setTokensAquired(checkIfRefreshTokenExist()); // Checks for a refresh token, if it exists, we change the apps interface to not need to log in.
 
@@ -35,7 +36,6 @@ function App() {
     const timeout = tokenTimeLeft - 30000;
 
     let timeoutID;
-    console.log(`refresing in ${tokenTimeLeft / 1000 / 60}`);
 
     if (tokenTimeLeft > 0) {
       timeoutID = setTimeout(() => {
@@ -85,11 +85,17 @@ function App() {
     // Initial fetch on mount
     fetchEventsAndUpdate();
     setTriggerRender(false);
-  
+      console.log('fetching events');
     return () => clearInterval(intervalID); // Cleanup interval on unmount
   }, [triggerRender]); 
 
-
+const endMeetingTrigger = async () => {
+    const check = endEvent(await events.items[0].id);
+    if (await check == 200) {
+      setTriggerRender(true); 
+    }else{console.log('error code: ', check)}
+    
+}
   
 
   async function refreshBearerToken() {
@@ -101,9 +107,7 @@ function App() {
           refresh_token: localStorage.getItem("refresh_token"),
         }),
       });
-      console.log("I REFRESHED!!!!");
       const response = await data.json();
-      console.log('response is', response)
       localStorage.setItem("bearer_token", response.access_token);
 
       const currentTime = Date.now();
@@ -135,10 +139,7 @@ function App() {
             ? 
               <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'}/> 
             : 
-              <Button text={'Afslut'} clickHandler={()=>{
-                endEvent(events.items[0].id);
-                setTriggerRender(true); // TODO, fix det ordentligt
-              }} btnType={'secondary'}/>}
+              <Button text={'Afslut'} clickHandler={endMeetingTrigger} btnType={'secondary'}/>}
 
             
           
@@ -158,10 +159,13 @@ function App() {
               </div>
 
               <Countdown events={events} />
+              
             </div>
+            
           ) : (
-            <h1>Ingen begivenheder</h1>
+            <h1>Kommer der snart en begivenhed?</h1>
           )}
+          {events?.items?.length > 1 && <UpcomingMeetingContainer events={events} />}
         </div>
       ) : (
         <Button
@@ -227,9 +231,7 @@ function OAuthRedirectHandler() {
   }, []); //
 }
 
-function reserverMeeting(){
-  console.log("reservering");
 
-}
+
 
 export default App;
