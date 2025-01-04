@@ -1,0 +1,9 @@
+.container{
+    display:flex;
+    flex-direction:row;
+    gap: 10px;
+    overflow-x: scroll;
+    min-height: 200px;
+    background-color: rgba(0,12,131,0.5);
+    justify-self: self-end;
+}
