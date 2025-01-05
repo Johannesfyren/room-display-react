@@ -4,10 +4,19 @@
     gap: 10px;
     overflow-x: scroll;
     height: 120px;
-
-    background-color: var(--sec-col);;
+    background-color: var(--sec-col);
     justify-self: self-end;
 }
+.container-transparent{
+    display:flex;
+    flex-direction:row;
+    gap: 10px;
+    overflow-x: scroll;
+    height: 120px;
+    background-color: transparent;
+    justify-self: self-end;
+}
+
 .card-container{
     display: flex;
     flex-direction: column;
