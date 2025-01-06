@@ -139,3 +139,31 @@ button:active{
         transform: rotate(360deg);
     }
 }
+
+
+/* Wheel animation */
+/* .countdown--start{
+    animation: anim-open 1.5s ease-out; 
+}
+.countdown--end{
+    animation: anim-close 1.5s ease-out; 
+}
+
+@keyframes anim-close {
+   
+    100% {
+        stroke-dasharray: 1130;
+        stroke-dashoffset: 1130;
+    }
+}
+@keyframes anim-open {
+   
+    0%{
+        stroke-dasharray: 1130;
+        stroke-dashoffset: 1130;
+    }
+    100% {
+        stroke-dasharray: 1130;
+        stroke-dashoffset: 0;
+    }
+} */

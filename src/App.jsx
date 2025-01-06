@@ -159,7 +159,7 @@ const endMeetingTrigger = async () => {
                     ]}
                   ></Time>
                 </h2>
-                <h2>{events.summary.replace('@gmail.com','')}</h2>
+                <h2>{events.items[0].creator.email.replace('@gmail.com','')}</h2>
               </div>
               <Countdown events={events} />
               
