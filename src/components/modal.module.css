@@ -1,8 +1,8 @@
 .container{
-
+    position: relative;
     display: flex;
     flex-direction: column;
-   
+    top:50%;
    
 }
 .modal{
@@ -23,7 +23,8 @@
     h1{
         color: white;
         font-size: 2em;
-        text-align: center;
+        justify-self: center;
+        margin-top: 20px;
         
     }
 }
@@ -49,4 +50,7 @@
 .btn-group{
     display: flex;
     gap: 10px;
+    height:100%;
+    align-items: center;
+    justify-content: center;
 }
