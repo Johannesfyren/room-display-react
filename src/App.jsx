@@ -106,7 +106,7 @@ const endMeetingTrigger = async () => {
       const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/refreshAccessToken", { //"http://localhost:3000/refreshAccessToken"
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        mode: "cors"
+        mode: "cors",
         body: JSON.stringify({
           refresh_token: localStorage.getItem("refresh_token"),
         }),
