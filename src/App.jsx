@@ -225,7 +225,7 @@ function OAuthRedirectHandler() {
           localStorage.setItem("bearer_token", data.access_token);
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expiry_date", data.expiry_date);
-          window.location.href = "http://localhost:5173/"; //TODO: Change to the correct URL
+          window.location.href = "https://johannesfyren.github.io/room-display-react/"; //TODO: Change to the correct URLhttp://localhost:5173/
         })
         .catch((error) => console.error("Error sending code:", error));
     } else {
