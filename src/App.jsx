@@ -185,7 +185,7 @@ const endMeetingTrigger = async () => {
 
 const acquireTokensOnLogin = async () => {
   try {
-    const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/auth-url"); //http://localhost:3000/auth-url
+    const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/auth-url",{mode:"no-cors"}); //http://localhost:3000/auth-url
     const response = await data.json();
     console.log(response);
     window.location.href = response.url;
@@ -219,6 +219,7 @@ function OAuthRedirectHandler() {
       // Send the code from the URL to the backend
       fetch(`https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/oauth2callback?code=${code}`, {// `http://localhost:3000/oauth2callback?code=${code}`
         method: "GET",
+        mode:"no-cors"
       })
         .then((response) => response.json())
         .then((data) => {
