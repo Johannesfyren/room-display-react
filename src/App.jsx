@@ -166,7 +166,7 @@ const endMeetingTrigger = async () => {
             </div>
             
           ) : (
-            events?.items?.length > 0 &&  <PendingMeeting event={events.items[0]} />
+            events?.items?.length > 0 &&  <PendingMeeting events={events} />
           )}
           {events?.items?.length > 0 && <UpcomingMeetingContainer events={events} />}
         </div>

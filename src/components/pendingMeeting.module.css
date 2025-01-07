@@ -1,18 +1,67 @@
-.pending-meeting-info-container{
-    position: relative;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    padding: 0 30px 0 30px;
+.pending-meeting-container{
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #212933;
 }
 
-.pending-meeting-details{
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    /* background-color: #071F3D; */
+    background-image: linear-gradient(90deg,#071F3D,#071F3D,#0c3362,#104688,#0c3362,#071F3D,#071F3D);
+    background-size: 1100% 100%;
+    animation: animateBg 10s linear infinite;
+    color: white;
+    font-size: 2em;
+    padding: 0 30px 0 30px;
+    h2{
+        align-self: flex-start;
+        font-size:1.4em;
+        margin-top: 15px;
+        color: rgb(190, 190, 190);
+        font-weight: 300;
+    }
+    
+    
+}
+
+@keyframes animateBg {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+.bold{
+    font-weight: 800;
+}
+
+
+.main-content-wrapper{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    height: 75%;
+    padding: 30px;
+    aside{
+        color: rgb(178, 177, 177);
+        align-self: flex-end;
+    }
+}
+
+
+
+.main-content{
+    display: flex;
+    flex-direction: column;
+
     justify-content: center;
     h1{
-        font-size: 6em;
-        color: white;
+        font-size: 5em;
+        color: rgb(211, 209, 209);
         font-weight: 600;
         margin-bottom: 20px;
         max-width: 100%;
@@ -23,16 +72,47 @@
     }
     h2{
         font-size: 3em;
-        color: white;
+        color: rgb(211, 209, 209);
         font-weight: 600;
     }
 }
-.announcement{
-    position: absolute;
-    top: 150px;
-    left: 0;
-    padding-bottom: 100px;
-    color: grey;
-    font-size: 6em;
+
+.content-before-upcoming-state{
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    padding: 30px;
+    h1{
+        font-size: 5em;
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+        max-width: 100%;
+        text-wrap: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+    h2{
+        font-size: 2em;
+        color: white;
+        font-weight: 600;
+        
+    }
+}
+.content-before-upcoming-state :last-child{
+    margin-bottom: 30%;
 
 }
+.content-before-upcoming-state :first-child{
+    margin-top: 25px;
+
+}
+
+
+
+
+
+
+
+
