@@ -103,7 +103,7 @@ const endMeetingTrigger = async () => {
 
   async function refreshBearerToken() {
     try {
-      const data = await fetch("http://localhost:3000/refreshAccessToken", {
+      const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/", { //"http://localhost:3000/refreshAccessToken"
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -225,7 +225,7 @@ function OAuthRedirectHandler() {
           localStorage.setItem("bearer_token", data.access_token);
           localStorage.setItem("refresh_token", data.refresh_token);
           localStorage.setItem("expiry_date", data.expiry_date);
-          window.location.href = "https://johannesfyren.github.io/room-display-react/"; //TODO: Change to the correct URLhttp://localhost:5173/
+          window.location.href = "https://room-display-react.vercel.app/"; //TODO: Change to the correct URLhttp://localhost:5173/
         })
         .catch((error) => console.error("Error sending code:", error));
     } else {
