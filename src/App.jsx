@@ -103,7 +103,7 @@ const endMeetingTrigger = async () => {
 
   async function refreshBearerToken() {
     try {
-      const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/", { //"http://localhost:3000/refreshAccessToken"
+      const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/refreshAccessToken", { //"http://localhost:3000/refreshAccessToken"
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
