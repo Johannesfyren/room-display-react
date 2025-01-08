@@ -103,7 +103,7 @@ const endMeetingTrigger = async () => {
 
   async function refreshBearerToken() {
     try {
-      const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/refreshAccessToken", { //"http://localhost:3000/refreshAccessToken"
+      const data = await fetch("https://room-display-backend.vercel.app/refreshAccessToken", { //"http://localhost:3000/refreshAccessToken"
         method: "POST",
         headers: { "Content-Type": "application/json" },
         mode: "no-cors",
@@ -186,7 +186,7 @@ const endMeetingTrigger = async () => {
 
 const acquireTokensOnLogin = async () => {
   try {
-    const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/auth-url"); //http://localhost:3000/auth-url
+    const data = await fetch("https://room-display-backend.vercel.app/auth-url"); //http://localhost:3000/auth-url
     const response = await data.json();
     console.log('response from auth-url', await response);
     window.location.href = response.url;
@@ -218,7 +218,7 @@ function OAuthRedirectHandler() {
 
     if (code) {
       // Send the code from the URL to the backend
-      fetch(`https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/oauth2callback?code=${code}`, {// `http://localhost:3000/oauth2callback?code=${code}`
+      fetch(`https://room-display-backend.vercel.app/oauth2callback?code=${code}`, {// `http://localhost:3000/oauth2callback?code=${code}`
         method: "GET",
       })
         .then((response) => response.json())
