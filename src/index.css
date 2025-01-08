@@ -16,7 +16,7 @@
 .main-container{
     width: 100vw;
     height: 100vh;
-    background-image: url("assets/BG-img.png");
+    background-image: url("assets/Bg-img.png");
     background-size: cover;
     display:flex;
     flex-direction: column;
