@@ -186,9 +186,11 @@ const endMeetingTrigger = async () => {
 
 const acquireTokensOnLogin = async () => {
   try {
-    const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/auth-url"); //http://localhost:3000/auth-url
+    const data = await fetch("https://room-display-backend-johannesfyren-johannesfyrens-projects.vercel.app/auth-url",{
+      mode:"cors"
+    }); //http://localhost:3000/auth-url
     const response = await data.json();
-    console.log(response);
+    console.log('response from auth-url', await response);
     window.location.href = response.url;
   } catch (err) {
     console.error("there was and error", err);
