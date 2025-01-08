@@ -16,7 +16,7 @@
 .main-container{
     width: 100vw;
     height: 100vh;
-    background-image: url("assets/public/BG-img");
+    background-image: url("assets/BG-img");
     background-size: cover;
     display:flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
     touch-action: none;
 }
 .main-container-occupied{
-    background-image: url("assets/public/Bg-img-occupied.png");
+    background-image: url("assets/Bg-img-occupied.png");
 }
 
 .nav-container{
