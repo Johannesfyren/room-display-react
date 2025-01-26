@@ -19,6 +19,9 @@ export default function BookingModal({
   };
   const [showCustomTime, setShowCustomTime] = useState(false)
 
+  const closeCalendar = () => {
+    setShowCustomTime(false)
+  }
 
 
   return (
@@ -73,13 +76,15 @@ export default function BookingModal({
       </div>
       {showCustomTime &&(
         <div className={styles["custom-time-modal"]}>
-          <Calendar events = {events}/>
+          <Calendar events = {events} clickhandler={()=> setShowCustomTime(false)}/>
         </div>
       )}
      
     </div>
   );
 }
+
+
 
 function checkTimeToNextEvent(events) {
   if (events.length == 0) {

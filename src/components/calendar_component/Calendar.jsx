@@ -3,7 +3,9 @@ import MeetingCard from "./MeetingCard";
 import CalendarController from "./CalendarController";
 import styles from './calendar.module.css'
 
-export default function Calendar({events, expanded=false}) {
+
+
+export default function Calendar({events, clickhandler}) {
   const [renderMovableEvent, setRenderMovableEvent] = useState(false)
   const currentDate = new Date();
   let currentDatePlusOneHour = new Date();
@@ -41,18 +43,18 @@ useEffect(()=>{//Scroll to relevant posotion on the calendar when mounting
 
   return (
     <>
-    <p style={{marginLeft:"100%"}}>X</p>
+    <p className={styles['close-icon']} onClick={clickhandler}>✕</p>
         <div className={styles["expanded-calendar-wrapper"]}>
             <CalendarController editableEvent={editableEvent} setEditableEvent={setEditableEvent} setRenderMovableEvent={setRenderMovableEvent}/>
             <div className={styles["calendar-background"]}>
             {fillGrid()}
                 <div className={styles["calendar-container"]}>
                   {console.log(events)}
-                    {events.items.map((event) => {
+                    {events?.items?.length > 0 && events.items.map((event) => {
                         return <MeetingCard key={event.id} event={event} canEdit={false} editableEvent = {editableEvent} setEditableEvent={setEditableEvent} renderMovableEvent={renderMovableEvent} setRenderMovableEvent={setRenderMovableEvent}/>
                     })
                 }
-               { <MeetingCard key={events.items[0].id} event={editableEvent} editableEvent = {editableEvent} setEditableEvent={setEditableEvent} canEdit={true} renderMovableEvent={renderMovableEvent} setRenderMovableEvent={setRenderMovableEvent}/>} 
+               { <MeetingCard key={1} event={editableEvent} editableEvent = {editableEvent} setEditableEvent={setEditableEvent} canEdit={true} renderMovableEvent={renderMovableEvent} setRenderMovableEvent={setRenderMovableEvent}/>} 
                 </div>
             </div>
         </div>

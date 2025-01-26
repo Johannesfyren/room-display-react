@@ -146,3 +146,11 @@ body{
   margin-top: auto;
   margin-bottom: auto;
 }
+.close-icon{
+  position: fixed;
+  margin-left: 95%;
+
+  color: white;
+  font-size: 3em;
+  cursor: pointer;
+}
