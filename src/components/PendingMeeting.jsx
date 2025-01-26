@@ -3,12 +3,15 @@ import styles from "./pendingMeeting.module.css";
 import getMinutesToMeetingStart from "../../utilities.js";
 import MeetingCard from "./MeetingCard.jsx";
 
+
 export default function PendingMeeting({ events }) {
   const currentTime = new Date();
   return getMinutesToMeetingStart(events.items[0]) > 10 ? (
     <div className={styles["content-before-upcoming-state"]}>
       <h1>{events.items[0].summary}</h1>
+      {console.log(events)}
       <h2>
+
         <Time
           time={[
             new Date(events.items[0].start.dateTime),

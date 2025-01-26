@@ -1,6 +1,8 @@
 import Button from "./Button";
 import styles from "./modal.module.css";
 import { createEvent } from "../../gapi";
+import Calendar from "./calendar_component/Calendar.jsx"
+import { useState } from "react";
 
 export default function BookingModal({
   setTriggerRender,
@@ -8,15 +10,20 @@ export default function BookingModal({
   events,
   setIsLoading,
 }) {
+
   const handleClickEvent = async (extendedTime) => {
     setIsLoading(true); //this is for button loading spinner
     setShowModal(false);
     await createEvent(extendedTime);
     setTriggerRender(true);
   };
+  const [showCustomTime, setShowCustomTime] = useState(false)
+
+
 
   return (
     <div className={styles["model-backdrop"]}>
+      
       <div className={styles["container"]}>
         <div className={styles["modal"]}>
           <h1>Reservér Møde</h1>
@@ -49,6 +56,12 @@ export default function BookingModal({
                 checkTimeToNextEvent(events) < 60 ? "disabled" : "secondary"
               }
             />
+            
+            <Button
+              text={"Book fremad"}
+              clickHandler={() => setShowCustomTime(true)}
+              btnType={"secondary"}
+            />
           </div>
           <p
             className={styles["close-icon"]}
@@ -58,6 +71,12 @@ export default function BookingModal({
           </p>
         </div>
       </div>
+      {showCustomTime &&(
+        <div className={styles["custom-time-modal"]}>
+          <Calendar events = {events}/>
+        </div>
+      )}
+     
     </div>
   );
 }

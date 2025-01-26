@@ -13,6 +13,7 @@ import PendingMeeting from "./components/PendingMeeting.jsx";
 
 
 
+
 function App() {
   const [tokensAquired, setTokensAquired] = useState(false);
   const [events, setEvents] = useState([]);
@@ -91,7 +92,7 @@ function App() {
     return () => clearInterval(intervalID); // Cleanup interval on unmount
   }, [triggerRender]); 
 
-const endMeetingTrigger = async () => {
+const endEvent = async () => {
     setIsLoading(true);
     const check = endEvent(await events.items[0].id);
     if (await check == 200) {
@@ -126,7 +127,7 @@ const endMeetingTrigger = async () => {
 
   return (
     <>
-      {tokensAquired ? (
+      {tokensAquired ? ( //Vi kigger på om vi er logget ind og kan lave API-kald 
         <div className={activeEvent ? "main-container main-container-occupied" : "main-container"}>
           <div className="nav-container">
             <h1 className="clock">
@@ -142,11 +143,9 @@ const endMeetingTrigger = async () => {
             ? 
               <Button text={'Reservér'} clickHandler={() => setShowModal(true)} btnType={'primary'} isLoading={isLoading}/> 
             : 
-              <Button text={'Afslut'} clickHandler={endMeetingTrigger} btnType={'secondary'} isLoading={isLoading}/>}
-
-            
-          
+              <Button text={'Afslut'} clickHandler={endEvent} btnType={'secondary'} isLoading={isLoading}/>}
           </div>
+
           {activeEvent ? (
             <div className="meeting-info-container">
               <div className="meeting-details">
@@ -162,7 +161,6 @@ const endMeetingTrigger = async () => {
                 <h2>{events.items[0].creator.email.replace('@gmail.com','')}</h2>
               </div>
               <Countdown events={events} />
-              
             </div>
             
           ) : (
