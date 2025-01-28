@@ -1,19 +1,22 @@
 import TimePicker from "./timePicker"
 import styles from './calendar.module.css'
 
+import Button from "../Button.jsx";
+
 export default function CalendarController({editableEvent, setEditableEvent, setRenderMovableEvent}){
     
 
     function bookMeeting(formData){
-        console.log("hello")
-        alert(`You searched for '${formData.get("Fra")}'`);
+        
+        window.location.href ="http://localhost:5173/"
     }
 
     return(
         <div className={styles["calendar-controller"]}>
             <form action={bookMeeting}>
                 <TimePicker editableEvent={editableEvent} setEditableEvent={setEditableEvent} setRenderMovableEvent={setRenderMovableEvent}/>
-                <button type="submit">Reserver</button>
+                <Button text={'Reservér'} btnType={'primary'} clickHandler={()=>console.log("lol")} />
+                {/* <button type="submit">Reserver</button> */}
             </form>
         </div>
     )
