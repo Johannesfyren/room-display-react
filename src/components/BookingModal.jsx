@@ -3,6 +3,7 @@ import styles from "./modal.module.css";
 import { createEvent } from "../../gapi";
 import Calendar from "./calendar_component/Calendar.jsx"
 import { useState } from "react";
+import { motion } from "motion/react"
 
 export default function BookingModal({
   setTriggerRender,

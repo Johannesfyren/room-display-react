@@ -5,7 +5,7 @@ import Countdown from "./components/Countdown.jsx";
 import Time from "./components/Time.jsx";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-import { getEvents, endEvent} from "../gapi.js";
+import { getEvents, endMeeting} from "../gapi.js";
 import BookingModal from "./components/BookingModal.jsx";
 import UpcomingMeetingContainer from "./components/UpcomingMeetingContainer.jsx";
 import PendingMeeting from "./components/PendingMeeting.jsx";
@@ -94,7 +94,7 @@ function App() {
 
 const endEvent = async () => {
     setIsLoading(true);
-    const check = endEvent(await events.items[0].id);
+    const check = endMeeting(await events.items[0].id);
     if (await check == 200) {
       setTriggerRender(true); 
     }else{console.log('error code: ', check)}

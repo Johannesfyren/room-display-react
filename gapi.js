@@ -77,7 +77,7 @@ async function getEvents() {
   }
  
 
-  async function endEvent(eventID) {
+  async function endMeeting(eventID) {
     const ACCESS_TOKEN = localStorage.getItem("bearer_token");
     const CALENDAR_ID = "primary"; // Or a specific calendar ID
     const today = new Date();
@@ -151,4 +151,4 @@ async function getEvents() {
     // }
   //}
 
-export {getEvents, createEvent, endEvent}
+export {getEvents, createEvent, endMeeting}
