@@ -166,7 +166,7 @@ const endEvent = async () => {
           ) : (
             events?.items?.length > 0 &&  <PendingMeeting events={events} />
           )}
-          {events?.items?.length > 0 && <UpcomingMeetingContainer events={events} />}
+          {events?.items?.length > 0 && <UpcomingMeetingContainer events={events} activeEvent={activeEvent}/>}
         </div>
       ) : (
         <Button

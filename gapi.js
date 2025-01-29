@@ -23,7 +23,6 @@ async function getEvents() {
       const events = await response.json();
       events.items.filter((event) => event.eventType =! "birthday" );
       
-      console.log(events)
       if (events.items.length == 0) {
         return []; 
       }else{
