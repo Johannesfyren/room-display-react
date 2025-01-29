@@ -7,20 +7,19 @@ import MeetingCard from "./MeetingCard.jsx";
 export default function PendingMeeting({ events }) {
   const currentTime = new Date();
   return getMinutesToMeetingStart(events.items[0]) > 10 ? (
-    <div className={styles["content-before-upcoming-state"]}>
-      <h1>{events.items[0].summary}</h1>
-      {console.log(events)}
-      <h2>
-
-        <Time
-          time={[
-            new Date(events.items[0].start.dateTime),
-            new Date(events.items[0].end.dateTime),
-          ]}
-        ></Time>
-      </h2>
-      <h2>{events.items[0].creator.email.replace("@gmail.com", "")}</h2>
-    </div>
+    console.log('yoyo')
+    // <div className={styles["content-before-upcoming-state"]}>
+    //   <h1>{events.items[0].summary}</h1>
+    //   <h2>
+    //     <Time
+    //       time={[
+    //         new Date(events.items[0].start.dateTime),
+    //         new Date(events.items[0].end.dateTime),
+    //       ]}
+    //     ></Time>
+    //   </h2>
+    //   <h2>{events.items[0].creator.email.replace("@gmail.com", "")}</h2>
+    // </div>
   ) : (
     <div className={styles["pending-meeting-container"]}>
       <div className={styles["top-bar"]}>
@@ -68,16 +67,3 @@ export default function PendingMeeting({ events }) {
   );
 }
 
-// <div className={styles["pending-meeting-details"]}>
-/* <h1>{event.summary}</h1>
-<h2>
-  <Time
-    time={[
-      new Date(event.start.dateTime),
-      new Date(event.end.dateTime),
-    ]}
-  ></Time>
-</h2>
-<h2>{event.creator.email.replace('@gmail.com','')}</h2>
-{console.log(event)}
-</div> */
